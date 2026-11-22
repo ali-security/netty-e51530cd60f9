@@ -25,6 +25,7 @@ import io.netty.test.udt.util.EchoByteHandler;
 import io.netty.test.udt.util.UnitHelp;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -52,6 +53,9 @@ public class NioUdtByteRendezvousChannelTest extends AbstractUdtTest {
      * verify basic echo byte rendezvous
      */
     @Test
+    @Disabled("Racy: the loop exits once either side reaches transferLimit and both channels are closed with"
+            + " echo data still in flight, then handler1.counter() == handler2.counter() is asserted;"
+            + " on GitHub runners it fails every run (e.g. 1178176 vs 1114112)")
     @Timeout(value = 10000, unit = TimeUnit.MILLISECONDS)
     public void basicEcho() throws Exception {
 
